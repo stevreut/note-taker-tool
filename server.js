@@ -13,6 +13,12 @@ app.get('/api/db', (req, res) => {
   res.json(repos); 
 
 });
+
+app.get('/notes', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/notes.html'));
+    // Yes, the above works, now .... TODO
+})
+
 app.put('/api/db', (req, res) => {
 
   res.send("you hit the put endpoint for api/db!"); 
