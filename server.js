@@ -16,7 +16,12 @@ app.get('/api/db', (req, res) => {
 
 app.get('/notes', (req, res) => {
     res.sendFile(path.join(__dirname, './public/notes.html'));
-    // Yes, the above works, now .... TODO
+    // Yes, the above works, now .... TODO added evening 8/22
+})
+
+app.get('/api/notes', (req, res) => {
+  res.sendFile(path.join(__dirname, './public/notes.html'));
+  // Yes, the above works, now .... TODO added morning 8/23
 })
 
 app.put('/api/db', (req, res) => {
