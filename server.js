@@ -3,6 +3,11 @@ const path = require('path');
 const app = express();
 const PORT = 5711;  // TODO - must make Heroku friendly
 
+// TODO - next two lines added 8/24 9:13 a.m. - let's see if this fixes it
+// TODO - 8/23 8:14 a.m. - YES!!
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 const notesDataObj = require("./db/db.json")
 console.log('required ./db/db/json as notesDataObj in server - line 7');
 console.log('notesDataObj on load = "' 
@@ -37,12 +42,12 @@ app.post('/api/notes', (req, res) => {
   // Check if there is anything in the response body
   console.info('req body at post = "' ,req.body ,'"');
   if (req.body && req.body.title && req.body.text) {
-    let iid = Math.floor(Math.random*100000);  // TODO
-    console.info('rand id = ' + req.body.id);
+    let iid = Math.floor(Math.random()*100000);  // TODO
+    console.info('rand id = ' + iid);
     let response = {
       title : req.body.title,
       text : req.body.text,
-      id : iid
+      id : iid  // TODO - fix this with something more appropriate later
       // status: 'success',
       // data: req.body,
     };
