@@ -58,11 +58,13 @@ const renderActiveNote = () => {
   hide(saveNoteBtn);
 
   if (activeNote.id) {
+    console.log('rendered activate note has id = ' + activeNote.id);
     noteTitle.setAttribute('readonly', true);
     noteText.setAttribute('readonly', true);
     noteTitle.value = activeNote.title;
     noteText.value = activeNote.text;
   } else {
+    console.log('rendered activate note has on id');
     noteTitle.removeAttribute('readonly');
     noteText.removeAttribute('readonly');
     noteTitle.value = '';
@@ -71,6 +73,8 @@ const renderActiveNote = () => {
 };
 
 const handleNoteSave = () => {
+  console.log('saving note w/ title = "' + 
+    noteTitle.value + '" and text = "' + noteText.value + '"');
   const newNote = {
     title: noteTitle.value,
     text: noteText.value,
@@ -108,6 +112,7 @@ const handleNoteView = (e) => {
 
 // Sets the activeNote to and empty object and allows the user to enter a new note
 const handleNewNoteView = (e) => {
+  console.log('new note button pressed');
   activeNote = {};
   renderActiveNote();
 };
@@ -122,7 +127,9 @@ const handleRenderSaveBtn = () => {
 
 // Render the list of note titles
 const renderNoteList = async (notes) => {
+  console.log('rendering note list (allegedly)');
   let jsonNotes = await notes.json();
+  console.log('after await render, w.l.p = ' + window.location.pathname);
   if (window.location.pathname === '/notes') {
     noteList.forEach((el) => (el.innerHTML = ''));
   }
@@ -163,6 +170,7 @@ const renderNoteList = async (notes) => {
   }
 
   jsonNotes.forEach((note) => {
+    console.log('rendering for note.titel = ' + note.title);
     const li = createLi(note.title);
     li.dataset.note = JSON.stringify(note);
 
