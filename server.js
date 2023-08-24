@@ -3,14 +3,16 @@ const path = require('path');
 const app = express();
 const PORT = 5711;  // TODO - must make Heroku friendly
 
-const repos = require("./db/db.json")
-console.log('required ./db/db/json as repos in server - line 7');
+const notesDataObj = require("./db/db.json")
+console.log('required ./db/db/json as notesDataObj in server - line 7');
+console.log('notesDataObj on load = "' 
+  + JSON.stringify(notesDataObj) + '"');
 
 app.use(express.static('public')); console.log('public set in server - line 9');
 
 app.get('/api/db', (req, res) => {
   console.log('get /api/db hit in server - line 12');
-  res.json(repos); 
+  res.json(notesDataObj); 
 
 });
 
@@ -22,8 +24,7 @@ app.get('/notes', (req, res) => {
 
 app.get('/api/notes', (req, res) => {
   console.log('get /api/notes hit in server - line 24');
-  res.sendFile(path.join(__dirname, './public/notes.html'));
-  // Yes, the above works, now .... TODO added morning 8/23
+  res.status(200).json(notesDataObj);
 })
 
 app.put('/api/db', (req, res) => {
@@ -40,6 +41,10 @@ app.post('/api/db', (req, res) => {
   console.log('post /api/db hit in server - line 40');
   res.send("you hit the post endpoint for api/db!"); 
 
+});
+app.get('*', (req, res) => {
+  console.log('get * hit in server - line 46');
+  res.sendFile(path.join(__dirname, './public/index.html'));
 });
 console.log('server is listening at ' + PORT);
 app.listen(PORT, () =>

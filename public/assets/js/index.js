@@ -25,8 +25,11 @@ const hide = (elem) => {
 // activeNote is used to keep track of the note in the textarea
 let activeNote = {};
 
-const getNotes = () =>
-  console.log('fetching /api/notes');
+const getNotes = () => 
+  // console.log('fetching /api/notes');
+  // NOTE: Add the above console logging caused
+  // the fetch below to no longer return a
+  // value, which then screwed everything up.
   fetch('/api/notes', {
     method: 'GET',
     headers: {
