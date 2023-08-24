@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const fs = require('fs');
 const app = express();
 const PORT = 5711;  // TODO - must make Heroku friendly
 
@@ -82,9 +83,12 @@ function appendAndSave(note) {
   // const notesDataObj = require(DB_FILE_NAME);
   notesDataObj.push(note);
   console.log('\n\nappended notesDataObj:');
-  for (let i=0;i<notesDataObj.length;i++) {
+  for (let i = 0; i < notesDataObj.length; i++) {
     console.log('note[' + i + ']:');
     console.log(JSON.stringify(notesDataObj[i]));
   }
   // TODO - still have to write to file
-}
+  fs.writeFile(DB_FILE_NAME, JSON.stringify(notesDataObj, null, 2), (err) =>
+    err ? console.error(err) : console.info(`\nData written to ${DB_FILE_NAME}`)
+  );
+};
