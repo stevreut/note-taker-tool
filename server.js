@@ -28,19 +28,23 @@ app.get('/api/notes', (req, res) => {
 })
 
 app.post('/api/notes', (req, res) => {
-  console.log('post /api/notes hit on server - line 31');
+  console.info('post /api/notes hit on server - line 31');
   // TODO
   // Prepare a response object to send back to the client
-  let response;
+  // let response;
+  // console.log ('text = ' + req.body.text);
 
   // Check if there is anything in the response body
-  console.log('req body at post = "' ,req.body ,'"');
+  console.info('req body at post = "' ,req.body ,'"');
   if (req.body && req.body.title && req.body.text) {
-    req.body.id = Math.floor(Math.random*1000000);
-    console.log('rand id = ' + req.body.id);
-    response = {
-      status: 'success',
-      data: req.body,
+    let iid = Math.floor(Math.random*100000);  // TODO
+    console.info('rand id = ' + req.body.id);
+    let response = {
+      title : req.body.title,
+      text : req.body.text,
+      id : iid
+      // status: 'success',
+      // data: req.body,
     };
     res.status(201).json(response);
   } else {
