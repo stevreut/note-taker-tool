@@ -6,8 +6,9 @@ const PORT = 5711;  // TODO - must make Heroku friendly
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const notesDataObj = require("./db/db.json")
-console.log('required ./db/db/json as notesDataObj in server');
+const DB_FILE_NAME = './db/db.json';
+const notesDataObj = require(DB_FILE_NAME);
+console.log('required ' + DB_FILE_NAME + ' as notesDataObj in server');
 console.log('notesDataObj on load = "' 
   + JSON.stringify(notesDataObj) + '"');
 
@@ -78,5 +79,12 @@ function uniqueId() {
 };
 
 function appendAndSave(note) {
-  // TODO
+  // const notesDataObj = require(DB_FILE_NAME);
+  notesDataObj.push(note);
+  console.log('\n\nappended notesDataObj:');
+  for (let i=0;i<notesDataObj.length;i++) {
+    console.log('note[' + i + ']:');
+    console.log(JSON.stringify(notesDataObj[i]));
+  }
+  // TODO - still have to write to file
 }
