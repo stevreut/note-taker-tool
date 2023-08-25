@@ -49,6 +49,21 @@ app.post('/api/notes', (req, res) => {
   }
 })
 
+app.delete('/api/notes/:id', (req, res) => {
+  const idToDelete = req.params.id;
+  console.log('/api/notes/ delete intercepted ; id = "' + idToDelete + '"');
+  for (let i=0; i<notesDataObj.length; i++) {
+    if (notesDataObj[i].id === idToDelete) {
+      notesDataObj.splice(i,1);  // delete element at index i
+      writeNotes();
+      res.status(200).json('TODO - let\'s pretend this worked ("' + idToDelete + '")');
+      console.log('do we ever get here (after delete res modification');
+      return;
+    }
+  }
+  res.status(500/*TODO*/).json('no such id found to delete');  // TODO
+})
+
 // app.put('/api/db', (req, res) => {
 //   console.log('put /api/db it in server');
 //   res.send("you hit the put endpoint for api/db!"); 
@@ -90,15 +105,17 @@ function uniqueId() {
 };
 
 function appendAndSave(note) {
-  // const notesDataObj = require(DB_FILE_NAME);
   notesDataObj.push(note);
   console.log('\n\nappended notesDataObj:');
   for (let i = 0; i < notesDataObj.length; i++) {
     console.log('note[' + i + ']:');
     console.log(JSON.stringify(notesDataObj[i]));
   }
-  // TODO - still have to write to file
+  writeNotes();
+};
+
+function writeNotes() {
   fs.writeFile(DB_FILE_NAME, JSON.stringify(notesDataObj, null, 2), (err) =>
     err ? console.error(err) : console.info(`\nData written to ${DB_FILE_NAME}`)
   );
-};
+}
