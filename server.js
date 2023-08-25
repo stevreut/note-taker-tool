@@ -76,7 +76,17 @@ app.listen(PORT, () =>
 );
 
 function uniqueId() {
-  return Math.floor(Math.random()*1000000);  // TODO - temporary implementation
+  // Generates a random (and VERY likely unique) STRING
+  // of 4 hexadecimal digits
+  //
+  // Routine borrowed and minimally 
+  // modified from uuid.js of unit-11 activity 19
+  let uuid =
+    Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
+  console.log('uuid generated = "' + uuid + '"');
+  return uuid;
 };
 
 function appendAndSave(note) {
