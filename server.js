@@ -7,42 +7,29 @@ const PORT = 5711;  // TODO - must make Heroku friendly
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const DB_FILE_NAME = './db/db.json';
-const notesDataObj = require(DB_FILE_NAME);
-console.log('required ' + DB_FILE_NAME + ' as notesDataObj in server');
-console.log('notesDataObj on load = "' 
-  + JSON.stringify(notesDataObj) + '"');
+const DB_FILE_NAME = './db/dbx.json';  // TODO - change back to db from dbx after testing
+const notesDataObj = require(DB_FILE_NAME) || [];
 
-app.use(express.static('public')); console.log('public set in server');
-
-// app.get('/api/db', (req, res) => {
-//   console.log('get /api/db hit in server');
-//   res.json(notesDataObj); 
-// });
+app.use(express.static('public'));
 
 app.get('/notes', (req, res) => {
-    console.log('get /notes hit in server');
     res.sendFile(path.join(__dirname, './public/notes.html'));
 })
 
 app.get('/api/notes', (req, res) => {
-  console.log('get /api/notes hit in server');
   res.status(200).json(notesDataObj);
 })
 
 app.post('/api/notes', (req, res) => {
-  console.info('post /api/notes hit on server');
-  console.info('req body at post = "' ,req.body ,'"');
   const { title, text } = req.body;
   if (title && text) {
-    let id = uniqueId();  // TODO - must define function
-    console.info('rand id = ' + id);
+    let id = uniqueId();
     let response = {
       title : req.body.title,
       text : req.body.text,
       id : id
     };
-    appendAndSave(response);  // TODO - must define function
+    appendAndSave(response);
     res.status(201).json(response);
   } else {
     res.status(400).json('Request body must contain title and text');
@@ -51,43 +38,24 @@ app.post('/api/notes', (req, res) => {
 
 app.delete('/api/notes/:id', (req, res) => {
   const idToDelete = req.params.id;
-  console.log('/api/notes/ delete intercepted ; id = "' + idToDelete + '"');
   for (let i=0; i<notesDataObj.length; i++) {
     if (notesDataObj[i].id === idToDelete) {
-      notesDataObj.splice(i,1);  // delete element at index i
+      let deletedNote = notesDataObj.splice(i,1);  // delete element at index i
       writeNotes();
-      res.status(200).json('TODO - let\'s pretend this worked ("' + idToDelete + '")');
-      console.log('do we ever get here (after delete res modification');
+      res.status(200).json(deleteNote);  // TODO - check if 200 is correct
       return;
     }
   }
-  res.status(500/*TODO*/).json('no such id found to delete');  // TODO
+  res.status(500).json('no id ' + idToDelete + ' found to delete');  // TODO - check if 500 is correct
 })
 
-// app.put('/api/db', (req, res) => {
-//   console.log('put /api/db it in server');
-//   res.send("you hit the put endpoint for api/db!"); 
-
-// });
-// app.delete('/api/db', (req, res) => {
-//   console.log('delete /api/db hit in server');
-//   res.send("you hit the delete endpoint for api/db!"); 
-
-// });
-// app.post('/api/db', (req, res) => {
-//   console.log('post /api/db hit in server');
-//   res.send("you hit the post endpoint for api/db!"); 
-
-// });
-
 app.get('*', (req, res) => {
-  console.log('get * hit in server');
   res.sendFile(path.join(__dirname, './public/index.html'));
 });
 
-console.log('server is listening at ' + PORT);
+console.log('server will be listening at ' + PORT);
 app.listen(PORT, () =>
-  console.log(`Example app listening at http://localhost:${PORT}`)
+  console.log(`note-taker app server is listening at ${PORT}`)
 );
 
 function uniqueId() {
