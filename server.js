@@ -7,20 +7,26 @@ const PORT = process.env.port || 5711;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const DB_FILE_NAME = './db/db.json';
+const DB_FILE_NAME = './db/db.json';  // Location of persisted notes
 const notesDataObj = require(DB_FILE_NAME);
 
 app.use(express.static('public'));
 
 app.get('/notes', (req, res) => {
-    res.sendFile(path.join(__dirname, './public/notes.html'));
+  // Go to notes page from landing page
+  res.sendFile(path.join(__dirname, './public/notes.html'));
 })
 
 app.get('/api/notes', (req, res) => {
+  // respond back with JSON array of notes
   res.status(200).json(notesDataObj);
 })
 
 app.post('/api/notes', (req, res) => {
+  // Provided title and text are present, appends a new note
+  // with generated unique ID to the internal array and also 
+  // persists that augmented array to file
+  // before responding with the new note (including ID)
   const { title, text } = req.body;
   if (title && text) {
     let id = uniqueId();
@@ -37,6 +43,10 @@ app.post('/api/notes', (req, res) => {
 })
 
 app.delete('/api/notes/:id', (req, res) => {
+  // Handles a delete request by assuming the :id parameter has a value matching the
+  // unique id attribute of one of the notes.  The array of notes is examined to find
+  // a match, deletes the element that matches (based on id), updates the DB file
+  // accordingly and responds back with the note object that was deleted.
   const idToDelete = req.params.id;
   for (let i=0; i<notesDataObj.length; i++) {
     if (notesDataObj[i].id === idToDelete) {
