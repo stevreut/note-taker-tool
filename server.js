@@ -7,8 +7,8 @@ const PORT = 5711;  // TODO - must make Heroku friendly
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const DB_FILE_NAME = './db/dbx.json';  // TODO - change back to db from dbx after testing
-const notesDataObj = require(DB_FILE_NAME) || [];
+const DB_FILE_NAME = './db/db.json';
+const notesDataObj = require(DB_FILE_NAME);
 
 app.use(express.static('public'));
 
