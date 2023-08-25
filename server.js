@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const app = express();
-const PORT = 5711;  // TODO - must make Heroku friendly
+const PORT = process.env.port || 5711;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
