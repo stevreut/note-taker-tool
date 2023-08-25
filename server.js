@@ -68,17 +68,11 @@ function uniqueId() {
     Math.floor((1 + Math.random()) * 0x10000)
       .toString(16)
       .substring(1);
-  console.log('uuid generated = "' + uuid + '"');
   return uuid;
 };
 
 function appendAndSave(note) {
   notesDataObj.push(note);
-  console.log('\n\nappended notesDataObj:');
-  for (let i = 0; i < notesDataObj.length; i++) {
-    console.log('note[' + i + ']:');
-    console.log(JSON.stringify(notesDataObj[i]));
-  }
   writeNotes();
 };
 
