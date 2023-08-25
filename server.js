@@ -42,7 +42,7 @@ app.delete('/api/notes/:id', (req, res) => {
     if (notesDataObj[i].id === idToDelete) {
       let deletedNote = notesDataObj.splice(i,1);  // delete element at index i
       writeNotes();
-      res.status(200).json(deleteNote);  // TODO - check if 200 is correct
+      res.status(200).json(deletedNote);  // TODO - check if 200 is correct
       return;
     }
   }
