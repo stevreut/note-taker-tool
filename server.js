@@ -2,7 +2,8 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const app = express();
-const PORT = process.env.port || 5711;
+// SECOND "PORT" changed to UPPER CASE 8/25 1:24 p.m.
+const PORT = process.env.PORT || 5711;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
